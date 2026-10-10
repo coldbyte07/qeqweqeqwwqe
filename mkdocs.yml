@@ -8,6 +8,7 @@ theme:
     - search.suggest
     - search.highlight
     - content.code.copy
+    - navigation.prune
     - navigation.top
 
   palette:
