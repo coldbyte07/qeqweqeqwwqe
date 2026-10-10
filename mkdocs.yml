@@ -1,9 +1,31 @@
 site_name: My site
 site_url: https://mydomain.org/mysite
+
 theme:
   name: material
+  
   features:
-    - navigation.prune
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - navigation.top
+
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
 
 nav:
   - Home: index.md
