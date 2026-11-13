@@ -5,7 +5,7 @@ on:
       - master 
       - main
     tags:
-      - '*'   # Matches any tag (e.g., v1.0.0, 3.6.6, etc.)
+      - '*'
 permissions:
   contents: write
 jobs:
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          fetch-tags: true # Ensures all repository tags are fetched properly
+          fetch-tags: true
           
       - name: Configure Git Credentials
         run: |
@@ -41,7 +41,6 @@ jobs:
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
             
-            # Prevent deploying if the tag itself is named 'latest' to avoid alias collision
             if [ "$VERSION" = "latest" ]; then
               echo "Skipping 'latest' tag deployment to prevent alias collision."
               exit 0
@@ -52,6 +51,5 @@ jobs:
             mike set-default --push latest
           else
             echo "Deploying development docs for branch: ${GITHUB_REF#refs/heads/}"
-            # Deploy branch commits as 'dev' version without duplicating the alias name
             mike deploy --push dev
           fi
