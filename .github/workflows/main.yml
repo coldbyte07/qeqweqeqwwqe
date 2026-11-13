@@ -52,6 +52,6 @@ jobs:
             mike set-default --push latest
           else
             echo "Deploying development docs for branch: ${GITHUB_REF#refs/heads/}"
-            # Deploy branch commits as 'dev' version so 'latest' stays strictly an alias
-            mike deploy --push --update-aliases dev dev
+            # Deploy branch commits as 'dev' version without duplicating the alias name
+            mike deploy --push dev
           fi
