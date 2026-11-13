@@ -5,7 +5,7 @@ on:
       - master 
       - main
     tags:
-      - '*'   # Matches any tag (e.g., v1.0.0, 3.5.5, etc.)
+      - '*'   # Matches any tag (e.g., v1.0.0, 3.6.6, etc.)
 permissions:
   contents: write
 jobs:
@@ -52,6 +52,6 @@ jobs:
             mike set-default --push latest
           else
             echo "Deploying development docs for branch: ${GITHUB_REF#refs/heads/}"
-            mike deploy --push --update-aliases latest dev
-            mike set-default --push latest
+            # Deploy branch commits as 'dev' version so 'latest' stays strictly an alias
+            mike deploy --push --update-aliases dev dev
           fi
