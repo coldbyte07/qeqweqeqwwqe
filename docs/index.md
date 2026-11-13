@@ -6,3 +6,4 @@ This is the homepage of my documentation.
 - Written in clean **Markdown**
 - Automatically rendered using **Material for MkDocs**
 - Hosted on **GitHub Pages**
+- Auto versioning **sucks**
