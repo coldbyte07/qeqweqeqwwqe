@@ -5,7 +5,7 @@ on:
       - master 
       - main
     tags:
-      - '*'   # Matches any tag (e.g., v1.0.0, 1.0.0, etc.)
+      - '*'   # Matches any tag (e.g., v1.0.0, 3.5.5, etc.)
 permissions:
   contents: write
 jobs:
@@ -38,9 +38,6 @@ jobs:
       
       - name: Deploy docs with mike
         run: |
-          # Ensure git knows about branches on gh-pages if it's a fresh clone environment
-          git fetch origin gh-pages:gh-pages --unrelated-histories || true
-
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
             
