@@ -5,7 +5,7 @@ on:
       - master 
       - main
     tags:
-      - 'v*'
+      - '*'   # Matches any tag (e.g., v1.0.0, 1.0.0, etc.)
 permissions:
   contents: write
 jobs:
@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          fetch-tags: true # Ensures all repository tags are fetched properly
           
       - name: Configure Git Credentials
         run: |
@@ -37,13 +38,23 @@ jobs:
       
       - name: Deploy docs with mike
         run: |
+          # Ensure git knows about branches on gh-pages if it's a fresh clone environment
+          git fetch origin gh-pages:gh-pages --unrelated-histories || true
+
           if [[ $GITHUB_REF == refs/tags/* ]]; then
-            # If triggered by a tag, deploy that specific version and update 'latest'
             VERSION=${GITHUB_REF#refs/tags/}
-            mike deploy --push --update-aliases $VERSION latest
+            
+            # Prevent deploying if the tag itself is named 'latest' to avoid alias collision
+            if [ "$VERSION" = "latest" ]; then
+              echo "Skipping 'latest' tag deployment to prevent alias collision."
+              exit 0
+            fi
+
+            echo "Deploying versioned docs for tag: $VERSION"
+            mike deploy --push --update-aliases "$VERSION" latest
             mike set-default --push latest
           else
-            # If pushed to master/main directly, deploy as 'latest' (or 'dev')
+            echo "Deploying development docs for branch: ${GITHUB_REF#refs/heads/}"
             mike deploy --push --update-aliases latest dev
             mike set-default --push latest
           fi
